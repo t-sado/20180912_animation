@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<META http-equiv="Content-Type" content="text/html; charset=x-sjis">
+		<title>ダッシュアニメーション</title>
+		<script language="javascript">
+		// 画像の表示座標・移動量
+		var x  = 0; // 表示する座標
+		var pv = 10; // 1回の移動量
+
+		// キーボードのフラグ（1:押されている / 0:離されている）
+		var left  = 0;
+		var right = 0;
+		var space = 0;
+
+		// 画像を配列に格納する
+		var right_cnt = 0;
+		var right_img = new Array();
+		right_img[0] = new Image();
+		right_img[0].src = "images/mario_1.png";
+		right_img[1] = new Image();
+		right_img[1].src = "images/mario_2.png";
+		right_img[2] = new Image();
+		right_img[2].src=  "images/mario_3.png";
+
+		var left_cnt = 0;
+		var left_img = new Array();
+		left_img[0] = new Image();
+		left_img[0].src = "images/mario_4.png";
+		left_img[1] = new Image();
+		left_img[1].src = "images/mario_5.png";
+		left_img[2] = new Image();
+		left_img[2].src=  "images/mario_6.png";
+
+		/********** キーボードのイベント（押された） **********/
+		function keydown(event)
+		{
+		  // 左カーソルキー
+		  if(event.keyCode == 37) {
+		    if (!x) return false;
+		    left = 1;
+		  }
+		  // 右カーソルキー
+		  if(event.keyCode == 39) {
+		    // x = 450pxを右限界座標にする
+		    if (x == 450) return false;
+		    right = 1;
+		  }
+		  disp() ;
+		}
+
+		// キーボード入力を反映して表示座標を更新
+		function disp()
+		{
+		  if(left == 1) {
+		    x = x - pv;
+		    if (left_cnt > 2) left_cnt = 0;
+		    document.getElementById("mario_img").src = left_img[left_cnt++].src;
+		  }
+		  if(right == 1) {
+		    x = x + pv;
+		    if (right_cnt > 2) right_cnt = 0;
+		    document.getElementById("mario_img").src = right_img[right_cnt++].src;
+		  }
+		  document.getElementById("mario").style.left = x;
+		}
+
+		/********** キーボードのイベント（離された） **********/
+		function keyup(event)
+		{
+		  // leftキー
+		  if(event.keyCode == 37) {
+		    left = 0;
+		  }
+		  // rightキー
+		  if(event.keyCode == 39) {
+		    right = 0;
+		  }
+		}
+		</script>
+	</head>
+
+	<body>
+		<div id="mario" style="POSITION:absolute;Z-INDEX:1;VISIBILITY:visible;TOP:250px;LEFT:0px">
+			<img src="images/mario_1.png" id="mario_img">
+		</div>
+		<script language="javascript">
+			document.onkeydown = keydown ; // イベント検出
+			document.onkeyup   = keyup ; // イベント検出
+		</script>
+	</body>
+</html>
